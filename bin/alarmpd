@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+# vi: set ft=ruby :
+
+require 'optparse'
+require 'yaml'
+require 'alarmpd'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: alarmpd [options]"
+
+  opts.on('-b', '--background', 'run alarmpd in background') {|v| options[:background] = v}
+  opts.on('-c', '--config FILENAME', 'config file name') { |v| options[:config_file] = v }
+  opts.on('-h', '--host HOST', 'MPD host') { |v| options[:host] = v }
+  opts.on('-p', '--port PORT', Integer, 'MPD port') { |v| options[:port] = v }
+  opts.on('-i', '--interval SECONDS', Integer, 'Scan playlist every SECONDS for new alarms') { |v| options[:interval] = v }
+  opts.on('-f', '--fade_interval SECONDS', Integer, 'Makes every alarm fade in increments volume every SECONDS') { |v| options[:fade_interval] = v }
+
+end.parse!
+
+default_options = { 
+  port: 6600,
+  host: 'localhost',
+  interval: 5,
+}
+
+begin
+  config_options = {}
+  config_options = YAML.load_file(options[:config_file]) if options[:config_file]
+
+  default_options.merge!(config_options)
+  default_options.merge!(options)
+rescue Errno::ENOENT => e
+  Kernel.abort('config file doesn not exist')
+end
+
+ampd = AlarMPD.new default_options[:host], default_options[:port]
+ampd.interval = default_options[:interval]
+ampd.fade_interval = default_options[:fade_interval]
+
+Signal.trap('TERM') do
+  puts 'waiting for shutdown'
+  ampd.stop
+end
+
+Signal.trap('INT') do
+  puts 'waiting for shutdown'
+  ampd.stop
+end
+
+main = -> do
+  ampd.run
+  puts 'bye'
+end
+
+if options[:background]
+  pid = fork do
+    main.call
+  end
+
+  puts "PID #{pid}"
+  Process.detach(pid)
+else
+  puts "running in foreground"
+  main.call()
+end
