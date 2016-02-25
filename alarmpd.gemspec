@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = 'This daemon takes control over your MPD in order to wake you up with your favourite playlist. Schedule as much alarms as you like by creating playlists named after the wake up time.'
   s.authors     = ['Ingo Becker']
   s.email       = 'ingo@orgizm.net'
-  s.files       = Dir.glob('{bin,lib,spec}/**/*') + %w(README.md)
+  s.files       = Dir.glob('{bin,lib,spec}/**/*') + %w(README.md LICENSE)
   s.executables = ['alarmpd']
   s.homepage    = 'http://rubygems.org/gems/alarmpd'
   s.license     = 'GPL-3.0'
