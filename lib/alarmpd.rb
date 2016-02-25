@@ -116,18 +116,3 @@ class AlarMPD
     @alarm_job.unschedule if @alarm_job
   end
 end
-
-
-#class FadeInJob
-#
-#  include SuckerPunch::Job
-#  workers 1
-#
-#  def perform(alarmpd, interval)
-#    alarmpd.mpd.volume = alarmpd.mpd.volume + 1
-#    puts 'incrementing volume'
-#    if alarmpd.mpd.volume != 100
-#      FadeInJob.perform_in interval, alarmpd, interval
-#    end
-#  end
-#end
