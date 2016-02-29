@@ -1,9 +1,10 @@
 require 'rufus-scheduler'
 require 'ruby-mpd'
 
-Alarm = Struct.new(:name, :time)
 
 class AlarMPD
+
+  Alarm = Struct.new(:name, :time)
 
   H_SECS = 60 * 60
   D_SECS = H_SECS * 24
@@ -60,8 +61,11 @@ class AlarMPD
   end
 
   def fade_in_job(job)
-    @mpd.volume = @mpd.volume + 1
-    job.unschedule if @mpd.volume == 100
+    if @mpd.volume == 100
+      job.unschedule if @mpd.volume == 100
+    else
+      @mpd.volume = @mpd.volume + 1
+    end
   end
 
   def refresh

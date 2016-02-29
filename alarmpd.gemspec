@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'alarmpd'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2016-02-25'
   s.summary     = 'Turns your MPD into a playlist-based alarm clock.'
   s.description = 'This daemon takes control over your MPD in order to wake you up with your favourite playlist. Schedule as much alarms as you like by creating playlists named after the wake up time.'
