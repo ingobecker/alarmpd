@@ -13,5 +13,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'ruby-mpd', ['>= 0.3.3', '< 1.0']
   s.add_runtime_dependency 'rufus-scheduler', ['>= 3.2.0', '< 4.0']
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec', '~> 3.4', '>= 3.4.0'
 end
